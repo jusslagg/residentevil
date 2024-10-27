@@ -1,53 +1,81 @@
 package com.ejemplo.residentevil.controller;
 
+import com.ejemplo.residentevil.dto.EnemigoCreateDTO;
 import com.ejemplo.residentevil.dto.EnemigoDTO;
-import com.ejemplo.residentevil.mapper.EnemigoMapper;
-import com.ejemplo.residentevil.model.Enemigo;
-import com.ejemplo.residentevil.service.EnemigoService;
+import com.ejemplo.residentevil.services.EnemigoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/enemigos")
 public class EnemigoController {
-    @Autowired
-    private EnemigoService enemigoService;
 
-    @GetMapping
-    public List<EnemigoDTO> getAllEnemigos() {
-        return enemigoService.getAllEnemigos().stream()
-                .map(EnemigoMapper::toDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    private final EnemigoService enemigoService;
+
+    public EnemigoController(EnemigoService enemigoService) {
+        this.enemigoService = enemigoService;
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "Obtener todos los enemigos", description = "Retorna todos los enemigos")
+    @ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(schema = @Schema(implementation = EnemigoDTO.class)))
+    public ResponseEntity<List<EnemigoDTO>> getAllEnemigos() {
+        List<EnemigoDTO> enemigos = enemigoService.getAllEnemigos();
+        return ResponseEntity.ok(enemigos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EnemigoDTO> getEnemigoById(@PathVariable Long id) {
-        Optional<Enemigo> enemigo = enemigoService.getEnemigoById(id);
-        return enemigo.map(value -> ResponseEntity.ok(EnemigoMapper.toDTO(value)))
-                      .orElseGet(() -> ResponseEntity.notFound().build());
+    @Operation(summary = "Obtener enemigo por ID", description = "Retorna un enemigo específico")
+    public ResponseEntity<?> getEnemigoById(@PathVariable("id") Long id) {
+        try {
+            Optional<EnemigoDTO> enemigo = enemigoService.getEnemigoById(id);
+            return enemigo.map(ResponseEntity::ok)
+                          .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
-    @PostMapping
-    public EnemigoDTO createEnemigo(@RequestBody EnemigoDTO enemigoDTO) {
-        Enemigo enemigo = EnemigoMapper.toEntity(enemigoDTO);
-        return EnemigoMapper.toDTO(enemigoService.saveEnemigo(enemigo));
+    @PostMapping("/create")
+    @Operation(summary = "Crear un nuevo enemigo", description = "Crea un nuevo enemigo a partir de un DTO")
+    public ResponseEntity<EnemigoDTO> createEnemigo(@RequestBody EnemigoCreateDTO enemigoCreateDTO) {
+        try {
+            EnemigoDTO createdEnemigo = enemigoService.saveEnemigo(enemigoCreateDTO);
+            return ResponseEntity.status(201).body(createdEnemigo);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Eliminar enemigo", description = "Elimina un enemigo por ID")
+    public ResponseEntity<?> deleteEnemigo(@PathVariable("id") Long id) {
+        try {
+            enemigoService.deleteEnemigo(id);
+            return ResponseEntity.ok().body("Enemigo eliminado: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: No se pudo eliminar el enemigo, " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnemigoDTO> updateEnemigo(@PathVariable Long id, @RequestBody EnemigoDTO enemigoDTO) {
-        enemigoDTO.setId(id);
-        Enemigo enemigo = EnemigoMapper.toEntity(enemigoDTO);
-        return ResponseEntity.ok(EnemigoMapper.toDTO(enemigoService.saveEnemigo(enemigo)));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEnemigo(@PathVariable Long id) {
-        enemigoService.deleteEnemigo(id);
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "Actualizar enemigo", description = "Actualiza un enemigo existente")
+    public ResponseEntity<EnemigoDTO> updateEnemigo(@PathVariable Long id, @RequestBody EnemigoCreateDTO enemigoCreateDTO) {
+        try {
+            EnemigoDTO updatedEnemigo = enemigoService.updateEnemigo(id, enemigoCreateDTO);
+            return ResponseEntity.ok(updatedEnemigo);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 }

@@ -6,8 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class EnemigoDTO {
-    @Schema(description = "Unique identifier of the enemy", example = "1")
+public class EnemigoCreateDTO {
     private Long id;
 
     @Schema(description = "Name of the enemy", example = "Zombie")
@@ -16,13 +15,15 @@ public class EnemigoDTO {
     @Schema(description = "Type of the enemy", example = "Undead")
     private String tipo;
 
-    // Constructor vacío
-    public EnemigoDTO() {}
+    @Schema(description = "Description of the enemy's abilities", example = "Slow but deadly")
+    private String descripcion;
 
-    // Constructor con parámetros
-    public EnemigoDTO(Long id, String nombre, String tipo) {
+    public EnemigoCreateDTO() {}
+
+    public EnemigoCreateDTO(Long id, String nombre, String tipo, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.descripcion = descripcion;
     }
 }

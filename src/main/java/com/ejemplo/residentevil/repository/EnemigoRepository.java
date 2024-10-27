@@ -1,10 +1,14 @@
 package com.ejemplo.residentevil.repository;
 
-import com.ejemplo.residentevil.model.Enemigo;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.ejemplo.residentevil.model.Enemigo;
+
+@Repository
 public interface EnemigoRepository extends JpaRepository<Enemigo, Long> {
-    List<Enemigo> findByTipo(String tipo);
-    Long countByTipo(String tipo);
+
+    Optional<Enemigo> findById(Enemigo enemigoId);
 }

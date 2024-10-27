@@ -13,6 +13,17 @@ public class Personaje {
     private String nombre;
     private String habilidad;
 
+    // Constructor vacío
+    public Personaje() {
+    }
+
+    // Constructor con parámetros
+    public Personaje(Long id, String nombre, String habilidad) {
+        this.id = id;
+        this.nombre = nombre;
+        this.habilidad = habilidad;
+    }
+
     // Getters y Setters
     public Long getId() {
         return id;
