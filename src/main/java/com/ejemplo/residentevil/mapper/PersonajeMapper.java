@@ -7,20 +7,18 @@ import com.ejemplo.residentevil.model.Personaje;
 @Component
 public class PersonajeMapper {
 
-    // Convierte un objeto Personaje a PersonajeDTO
-    public PersonajeDTO toDTO(Personaje personaje) {
+    public PersonajeDTO toDTOPersonaje(Personaje personaje) {
         if (personaje == null) {
             throw new IllegalArgumentException("La entidad no puede ser nula");
         }
 
+
         return PersonajeDTO.builder()
                 .id(personaje.getId())
-                .nombre(personaje.getNombre())
-                .habilidad(personaje.getHabilidad())
+                .name(personaje.getNombre())
                 .build();
     }
 
-    // Convierte un objeto PersonajeDTO a Personaje
     public Personaje toEntity(PersonajeDTO personajeDTO) {
         if (personajeDTO == null) {
             throw new IllegalArgumentException("El personajeDTO no puede ser nulo");
@@ -28,8 +26,7 @@ public class PersonajeMapper {
 
         Personaje personaje = new Personaje();
         personaje.setId(personajeDTO.getId());
-        personaje.setNombre(personajeDTO.getNombre());
-        personaje.setHabilidad(personajeDTO.getHabilidad());
+        personaje.setNombre(personajeDTO.getName());
         return personaje;
     }
 }

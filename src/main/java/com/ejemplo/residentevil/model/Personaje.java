@@ -1,5 +1,6 @@
 package com.ejemplo.residentevil.model;
 
+import java.util.Collection;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -54,5 +55,10 @@ public class Personaje {
     public void setArmas(Set<Arma> armas) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setArmas'");
+    }
+
+    public static Collection<Arma> getArmas() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getArmas'");
     }
 }
