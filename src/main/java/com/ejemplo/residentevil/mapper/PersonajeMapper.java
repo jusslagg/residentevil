@@ -3,7 +3,6 @@ package com.ejemplo.residentevil.mapper;
 import org.springframework.stereotype.Component;
 import com.ejemplo.residentevil.dto.PersonajeDTO;
 import com.ejemplo.residentevil.model.Personaje;
-import java.util.stream.Collectors;
 
 @Component
 public class PersonajeMapper {

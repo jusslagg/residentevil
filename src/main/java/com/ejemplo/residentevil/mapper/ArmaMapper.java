@@ -2,10 +2,8 @@ package com.ejemplo.residentevil.mapper;
 
 import com.ejemplo.residentevil.dto.ArmaDTO;
 import com.ejemplo.residentevil.model.Arma;
-import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ArmaMapper {

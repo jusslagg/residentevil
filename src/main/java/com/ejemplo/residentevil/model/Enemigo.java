@@ -42,4 +42,9 @@ public class Enemigo {
     public void setArmas(Set<Arma> armas) {
         this.armas = armas;
     }
+
+    public void setDescripcion(String descripcion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDescripcion'");
+    }
 }

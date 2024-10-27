@@ -42,4 +42,14 @@ public class Arma {
     public void setEnemigos(Set<Enemigo> enemigos) {
         this.enemigos = enemigos;
     }
+
+    public int getStock() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getStock'");
+    }
+
+    public void setStock(int stockFinal) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setStock'");
+    }
 }

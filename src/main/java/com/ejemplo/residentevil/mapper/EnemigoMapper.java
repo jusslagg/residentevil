@@ -6,8 +6,6 @@ import com.ejemplo.residentevil.dto.EnemigoCreateDTO;
 import com.ejemplo.residentevil.dto.EnemigoDTO;
 import com.ejemplo.residentevil.model.Enemigo;
 
-import java.util.stream.Collectors;
-
 @Component
 public class EnemigoMapper {
 

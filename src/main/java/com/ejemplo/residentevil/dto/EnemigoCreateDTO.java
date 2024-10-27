@@ -18,8 +18,10 @@ public class EnemigoCreateDTO {
     @Schema(description = "Description of the enemy's abilities", example = "Slow but deadly")
     private String descripcion;
 
+    // Constructor vacío
     public EnemigoCreateDTO() {}
 
+    // Constructor con parámetros
     public EnemigoCreateDTO(Long id, String nombre, String tipo, String descripcion) {
         this.id = id;
         this.nombre = nombre;

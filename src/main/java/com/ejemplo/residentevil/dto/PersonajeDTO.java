@@ -31,4 +31,9 @@ public class PersonajeDTO {
         this.habilidad = habilidad;
         this.armas = armas;
     }
+
+    public Long[] getArmaIds() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getArmaIds'");
+    }
 }

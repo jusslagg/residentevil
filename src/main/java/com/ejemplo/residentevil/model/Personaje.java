@@ -1,5 +1,7 @@
 package com.ejemplo.residentevil.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,5 +49,10 @@ public class Personaje {
 
     public void setHabilidad(String habilidad) {
         this.habilidad = habilidad;
+    }
+
+    public void setArmas(Set<Arma> armas) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setArmas'");
     }
 }

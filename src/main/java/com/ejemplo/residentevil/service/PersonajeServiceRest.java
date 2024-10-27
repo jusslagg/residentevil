@@ -1,9 +1,6 @@
 package com.ejemplo.residentevil.service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,6 @@ import jakarta.transaction.Transactional;
 import com.ejemplo.residentevil.dto.PersonajeDTO;
 import com.ejemplo.residentevil.mapper.PersonajeMapper;
 import com.ejemplo.residentevil.model.Personaje;
-import com.ejemplo.residentevil.model.Arma; 
 import com.ejemplo.residentevil.repository.PersonajeRepository;
 import com.ejemplo.residentevil.repository.ArmaRepository; 
 
@@ -23,19 +19,19 @@ public class PersonajeServiceRest {
 
     private static final String BASE_URL = "https://jsonplaceholder.typicode.com/users"; 
 
-    @Autowired
     private final PersonajeRepository personajeRepository;
-    @Autowired
     private final PersonajeMapper personajeMapper;
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+
 
     @Autowired
-    private ArmaRepository armaRepository; 
-
-    public PersonajeServiceRest(PersonajeRepository personajeRepository, PersonajeMapper personajeMapper) {
+    public PersonajeServiceRest(PersonajeRepository personajeRepository, 
+                                PersonajeMapper personajeMapper, 
+                                RestTemplate restTemplate, 
+                                ArmaRepository armaRepository) {
         this.personajeRepository = personajeRepository;
         this.personajeMapper = personajeMapper;
+        this.restTemplate = restTemplate;
     }
 
     public List<PersonajeDTO> getAllPersonajes() {
@@ -55,51 +51,31 @@ public class PersonajeServiceRest {
     }
 
     public PersonajeDTO getPersonajeById(Long id) {
-        Optional<Personaje> optionalPersonaje = personajeRepository.findById(id);
-
-        if (optionalPersonaje.isPresent()) {
-            return personajeMapper.toDTO(optionalPersonaje.get());
-        } else {
-            PersonajeDTO personajeDTO = restTemplate.getForObject(BASE_URL + "/{id}", PersonajeDTO.class, id);
-            if (personajeDTO != null) {
-                return personajeDTO;
-            } else {
-                throw new RuntimeException("Personaje no encontrado ni en la base de datos ni en la API externa");
-            }
-        }
+        return personajeRepository.findById(id)
+            .map(personajeMapper::toDTO)
+            .orElseGet(() -> {
+                PersonajeDTO personajeDTO = restTemplate.getForObject(BASE_URL + "/{id}", PersonajeDTO.class, id);
+                if (personajeDTO != null) {
+                    return personajeDTO;
+                } else {
+                    throw new RuntimeException("Personaje no encontrado ni en la base de datos ni en la API externa");
+                }
+            });
     }
 
     @Transactional
-    public PersonajeDTO savePersonajeFromApi(Long id) {
-        PersonajeDTO personajeDTO = restTemplate.getForObject(BASE_URL + "/{id}", PersonajeDTO.class, id);
+    public PersonajeDTO savePersonajeFromApi(PersonajeDTO personajeDTO2) {
+        PersonajeDTO personajeDTO = restTemplate.getForObject(BASE_URL + "/{id}", PersonajeDTO.class, personajeDTO2);
 
         if (personajeDTO != null) {
             Personaje personaje = personajeMapper.toEntity(personajeDTO);
             Personaje savedPersonaje = personajeRepository.save(personaje);
             return personajeMapper.toDTO(savedPersonaje);
         } else {
-            throw new RuntimeException("Personaje no encontrado en la API con ID: " + id);
+            throw new RuntimeException("Personaje no encontrado en la API con ID: " + personajeDTO2);
         }
     }
 
-    public PersonajeDTO savePersonajeDTO(PersonajeDTO personajeDTO) {
-        Personaje personaje = personajeMapper.toEntity(personajeDTO);
-
-        // Si el DTO contiene IDs de armas, busca las armas correspondientes
-        if (personajeDTO.getArmaIds() != null && !personajeDTO.getArmaIds().isEmpty()) {
-            Set<Arma> armas = new HashSet<>();
-
-            for (Long armaId : personajeDTO.getArmaIds()) {
-                Optional<Arma> optionalArma = armaRepository.findById(armaId);
-                optionalArma.ifPresent(armas::add);
-            }
-
-            personaje.setArmas(armas); // Asegúrate de tener un método setArmas en tu modelo
-        }
-
-        Personaje savedPersonaje = personajeRepository.save(personaje);
-        return personajeMapper.toDTO(savedPersonaje);
-    }
 
     public void deletePersonaje(Long id) {
         if (personajeRepository.existsById(id)) {
@@ -117,6 +93,6 @@ public class PersonajeServiceRest {
                 personaje.setHabilidad(personajeDTO.getHabilidad());
                 return personajeMapper.toDTO(personajeRepository.save(personaje));
             })
-            .orElse(null);
+            .orElseThrow(() -> new RuntimeException("Personaje no encontrado con ID: " + id));
     }
 }
