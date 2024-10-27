@@ -44,12 +44,10 @@ public class Enemigo {
     }
 
     public void setDescripcion(String descripcion) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setDescripcion'");
     }
 
     public Object getPersonajes() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPersonajes'");
     }
 }

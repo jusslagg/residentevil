@@ -125,7 +125,6 @@ public class PersonajeServiceRest {
     }
 
     public PersonajeDTO savePersonajeFromApi(PersonajeDTO personajeDTO) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'savePersonajeFromApi'");
     }
 }
