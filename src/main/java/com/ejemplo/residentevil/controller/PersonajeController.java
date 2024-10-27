@@ -26,7 +26,7 @@ public class PersonajeController {
     @PostMapping("/create")
     public ResponseEntity<?> addPersonaje(@RequestBody PersonajeDTO personajeDTO) {
         try {
-            PersonajeDTO createdPersonaje = personajeService.savePersonajeFromApi(personajeDTO);
+            PersonajeDTO createdPersonaje = personajeService.savePersonajeDTO(personajeDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponseMsg("Personaje creado", createdPersonaje));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ApiResponseMsg("Error al crear personaje", e.getMessage()));

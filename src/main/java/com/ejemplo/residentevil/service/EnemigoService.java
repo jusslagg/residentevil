@@ -20,9 +20,9 @@ public class EnemigoService {
     @Autowired
     private final EnemigoMapper enemigoMapper;
 
-    public EnemigoService(EnemigoRepository enemigoRepository, EnemigoMapper enemigoMapper) {
-        this.enemigoRepository = enemigoRepository;
+    public EnemigoService(EnemigoMapper enemigoMapper, EnemigoRepository enemigoRepository) {
         this.enemigoMapper = enemigoMapper;
+        this.enemigoRepository = enemigoRepository;
     }
 
     public List<EnemigoDTO> getAllEnemigos(boolean includeRelations) {
@@ -47,17 +47,16 @@ public class EnemigoService {
             .map(enemigo -> {
                 enemigo.setNombre(enemigoCreateDTO.getNombre());
                 enemigo.setTipo(enemigoCreateDTO.getTipo());
-                enemigo.setDescripcion(enemigoCreateDTO.getDescripcion()); // Suponiendo que hay un campo descripción
                 return enemigoMapper.toDTO(enemigoRepository.save(enemigo), false);
             })
-            .orElseThrow(() -> new RuntimeException("Enemigo no encontrado con id: " + id));
+            .orElse(null);
     }
 
     public void deleteEnemigo(Long id) {
         if (enemigoRepository.existsById(id)) {
             enemigoRepository.deleteById(id);
         } else {
-            throw new RuntimeException("El enemigo no existe");
+            System.out.println("El enemigo no existe");
         }
     }
 }

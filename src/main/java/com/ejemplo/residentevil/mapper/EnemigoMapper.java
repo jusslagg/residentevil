@@ -1,13 +1,20 @@
 package com.ejemplo.residentevil.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.ejemplo.residentevil.dto.EnemigoCreateDTO;
 import com.ejemplo.residentevil.dto.EnemigoDTO;
 import com.ejemplo.residentevil.model.Enemigo;
 
+import java.util.stream.Collectors;
+
 @Component
 public class EnemigoMapper {
+
+    private final ArmaMapper armaMapper;
+
+    public EnemigoMapper(PersonajeMapper personajeMapper, ArmaMapper armaMapper) {
+        this.armaMapper = armaMapper;
+    }
 
     public EnemigoDTO toDTO(Enemigo enemigo, boolean includeRelations) {
         if (enemigo == null) {
@@ -20,9 +27,14 @@ public class EnemigoMapper {
                 .tipo(enemigo.getTipo());
 
         if (includeRelations) {
+            if (enemigo.getArmas() != null) {
+                builder.armas(enemigo.getArmas().stream()
+                        .map(armaMapper::toDTO) // Verifica que toDTO esté definido en ArmaMapper
+                        .collect(Collectors.toSet()));
+            }
         }
 
-        return builder.build();
+        return builder.build(); // Asegúrate de que build() esté correctamente implementado en EnemigoDTO
     }
 
     public Enemigo toEntity(EnemigoCreateDTO enemigoCreateDTO) {
@@ -34,6 +46,7 @@ public class EnemigoMapper {
         enemigo.setId(enemigoCreateDTO.getId());
         enemigo.setNombre(enemigoCreateDTO.getNombre());
         enemigo.setTipo(enemigoCreateDTO.getTipo());
+        // No asignar relaciones en la creación o actualización.
         return enemigo;
     }
 }

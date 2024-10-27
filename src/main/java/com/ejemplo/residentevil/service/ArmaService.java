@@ -1,7 +1,9 @@
 package com.ejemplo.residentevil.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import com.ejemplo.residentevil.dto.ArmaDTO;
 import com.ejemplo.residentevil.mapper.ArmaMapper;
 import com.ejemplo.residentevil.model.Arma;
 import com.ejemplo.residentevil.repository.ArmaRepository;
-
 @Service
 public class ArmaService {
     @Autowired
@@ -25,22 +26,21 @@ public class ArmaService {
     }
 
     public List<ArmaDTO> getAllArmas() {
-        List<Arma> armas = armaRepository.findAll();
-        if (armas.isEmpty()) {
+        if (armaRepository.findAll().isEmpty()) {
             throw new RuntimeException("No se encontraron armas");
         }
 
-        return armas.stream()
+        return armaRepository.findAll()
+                .stream()
                 .map(armaMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<ArmaDTO> getArmaById(Long id) {
-        return armaRepository.findById(id)
-                .map(armaMapper::toDTO)
-                .or(() -> {
-                    throw new RuntimeException("Arma no encontrada con id: " + id);
-                });
+        if (armaRepository.findById(id).isEmpty()) {
+            throw new RuntimeException("Arma no encontrada con id: " + id);
+        }
+        return armaRepository.findById(id).map(armaMapper::toDTO);
     }
 
     public ArmaDTO saveArma(ArmaDTO armaDTO) {

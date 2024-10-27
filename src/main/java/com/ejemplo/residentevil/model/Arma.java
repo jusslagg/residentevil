@@ -16,23 +16,34 @@ public class Arma {
     private Double daño;
     private String tipo;
 
+    private int stock; // Agregar atributo stock
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "arma_enemigo",
         joinColumns = @JoinColumn(name = "arma_id"),
         inverseJoinColumns = @JoinColumn(name = "enemigo_id")
     )
-    private Set<Enemigo> enemigos;
+    private Set<Enemigo> enemigos; // Inicializa el set
 
     public Arma() {
     }
 
-    public Arma(Long id, String nombre, Double daño, String tipo, Set<Enemigo> enemigos) {
+    public Arma(Long id, String nombre, Double daño, String tipo, int stock, Set<Enemigo> enemigos) {
         this.id = id;
         this.nombre = nombre;
         this.daño = daño;
         this.tipo = tipo;
-        this.enemigos = enemigos;
+        this.stock = stock; // Manejo de stock
+        this.enemigos = enemigos; // Manejo de nulos
+    }
+
+    public int getStock() {
+        return stock; // Método getter para stock
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock; // Método setter para stock
     }
 
     public Set<Enemigo> getEnemigos() {
@@ -40,16 +51,6 @@ public class Arma {
     }
 
     public void setEnemigos(Set<Enemigo> enemigos) {
-        this.enemigos = enemigos;
-    }
-
-    public int getStock() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getStock'");
-    }
-
-    public void setStock(int stockFinal) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setStock'");
+        this.enemigos = enemigos; // Manejo de nulos
     }
 }

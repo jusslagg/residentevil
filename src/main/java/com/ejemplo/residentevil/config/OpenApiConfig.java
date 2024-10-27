@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI springResidentevilOpenAPI() {
+    public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("API Resident Evil")
-                        .description("Modelo MVC para la API de Resident Evil.")
-                        .version("v1.0.0")
+                .info(new Info().title("Api Franquicia Panaderias")
+                        .description("Modelo MVC para Api de Panaderias.")
+                        .version("v2.0.1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()
-                        .description("Documentación de Resident Evil API")
-                        .url("https://residentevilapi.docs.github.org"));
+                        .description("SpringShop Wiki Documentation")
+                        .url("https://springshop.wiki.github.org/docs"));
     }
 }

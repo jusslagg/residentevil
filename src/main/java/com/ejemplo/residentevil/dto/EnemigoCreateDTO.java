@@ -28,4 +28,5 @@ public class EnemigoCreateDTO {
         this.tipo = tipo;
         this.descripcion = descripcion;
     }
+
 }

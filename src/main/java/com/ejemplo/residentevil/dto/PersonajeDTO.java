@@ -19,21 +19,24 @@ public class PersonajeDTO {
     private String habilidad;
 
     @Schema(description = "Set of weapons associated with the character")
-    private Set<ArmaDTO> armas;
+    private Set<Long> armaIds; 
 
     // Constructor vacío
     public PersonajeDTO() {}
 
     // Constructor con parámetros
-    public PersonajeDTO(Long id, String nombre, String habilidad, Set<ArmaDTO> armas) {
+    public PersonajeDTO(Long id, String nombre, String habilidad, Set<Long> armaIds) {
         this.id = id;
         this.nombre = nombre;
         this.habilidad = habilidad;
-        this.armas = armas;
+        this.armaIds = armaIds;
     }
 
-    public Long[] getArmaIds() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getArmaIds'");
+    public Set<Long> getArmaIds() {
+        return armaIds;
+    }
+
+    public void setArmaIds(Set<Long> armaIds) {
+        this.armaIds = armaIds;
     }
 }

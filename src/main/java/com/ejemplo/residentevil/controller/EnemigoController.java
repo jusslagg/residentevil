@@ -27,56 +27,36 @@ public class EnemigoController {
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Obtener todos los enemigos", 
-               description = "Retorna todos los enemigos",
-               responses = {
-                   @ApiResponse(responseCode = "200", 
-                                description = "Operación exitosa", 
-                                content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
-                   @ApiResponse(responseCode = "500", 
-                                description = "Error interno del servidor")
-               })
+    @Operation(summary = "Obtener todos los enemigos", description = "Retorna todos los enemigos", responses = {
+            @ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<List<EnemigoDTO>> getAllEnemigos() {
         List<EnemigoDTO> enemigos = enemigoService.getAllEnemigos(true);
         return ResponseEntity.ok(enemigos);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener enemigo por ID", 
-               description = "Retorna un enemigo específico",
-               responses = {
-                   @ApiResponse(responseCode = "200", 
-                                description = "Enemigo encontrado", 
-                                content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
-                   @ApiResponse(responseCode = "404", 
-                                description = "Enemigo no encontrado"),
-                   @ApiResponse(responseCode = "400", 
-                                description = "Error en la solicitud")
-               })
-    public ResponseEntity<?> getEnemigoById(@PathVariable("id") Long id) {
+    @Operation(summary = "Obtener enemigo por ID", description = "Retorna un enemigo específico", responses = {
+            @ApiResponse(responseCode = "200", description = "Enemigo encontrado", content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Enemigo no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Error en la solicitud")
+    })
+    public ResponseEntity<EnemigoDTO> getEnemigoById(@PathVariable("id") Long id) {
         try {
             Optional<EnemigoDTO> enemigo = enemigoService.getEnemigoById(id, true);
             return enemigo.map(ResponseEntity::ok)
-                          .orElseThrow();
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
     @PostMapping("/create")
-    @Operation(summary = "Crear un nuevo enemigo", 
-               description = "Crea un nuevo enemigo a partir de un DTO",
-               requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                   description = "DTO del enemigo a crear",
-                   required = true,
-                   content = @Content(schema = @Schema(implementation = EnemigoCreateDTO.class))),
-               responses = {
-                   @ApiResponse(responseCode = "201", 
-                                description = "Enemigo creado", 
-                                content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
-                   @ApiResponse(responseCode = "400", 
-                                description = "Error en la solicitud")
-               })
+    @Operation(summary = "Crear un nuevo enemigo", description = "Crea un nuevo enemigo a partir de un DTO", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "DTO del enemigo a crear", required = true, content = @Content(schema = @Schema(implementation = EnemigoCreateDTO.class))), responses = {
+            @ApiResponse(responseCode = "201", description = "Enemigo creado", content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Error en la solicitud")
+    })
     public ResponseEntity<?> createEnemigo(@RequestBody EnemigoCreateDTO enemigoCreateDTO) {
         try {
             EnemigoDTO createdEnemigo = enemigoService.saveEnemigo(enemigoCreateDTO);
@@ -87,16 +67,11 @@ public class EnemigoController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar enemigo", 
-               description = "Elimina un enemigo por ID",
-               responses = {
-                   @ApiResponse(responseCode = "200", 
-                                description = "Enemigo eliminado"),
-                   @ApiResponse(responseCode = "404", 
-                                description = "Enemigo no encontrado"),
-                   @ApiResponse(responseCode = "400", 
-                                description = "Error en la solicitud")
-               })
+    @Operation(summary = "Eliminar enemigo", description = "Elimina un enemigo por ID", responses = {
+            @ApiResponse(responseCode = "200", description = "Enemigo eliminado"),
+            @ApiResponse(responseCode = "404", description = "Enemigo no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Error en la solicitud")
+    })
     public ResponseEntity<?> deleteEnemigo(@PathVariable("id") Long id) {
         try {
             enemigoService.deleteEnemigo(id);
@@ -107,21 +82,11 @@ public class EnemigoController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar enemigo", 
-               description = "Actualiza un enemigo existente",
-               requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                   description = "DTO del enemigo a actualizar",
-                   required = true,
-                   content = @Content(schema = @Schema(implementation = EnemigoCreateDTO.class))),
-               responses = {
-                   @ApiResponse(responseCode = "200", 
-                                description = "Enemigo actualizado", 
-                                content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
-                   @ApiResponse(responseCode = "404", 
-                                description = "Enemigo no encontrado"),
-                   @ApiResponse(responseCode = "400", 
-                                description = "Error en la solicitud")
-               })
+    @Operation(summary = "Actualizar enemigo", description = "Actualiza un enemigo existente", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "DTO del enemigo a actualizar", required = true, content = @Content(schema = @Schema(implementation = EnemigoCreateDTO.class))), responses = {
+            @ApiResponse(responseCode = "200", description = "Enemigo actualizado", content = @Content(schema = @Schema(implementation = EnemigoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Enemigo no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Error en la solicitud")
+    })
     public ResponseEntity<?> updateEnemigo(@PathVariable Long id, @RequestBody EnemigoCreateDTO enemigoCreateDTO) {
         try {
             EnemigoDTO updatedEnemigo = enemigoService.updateEnemigo(id, enemigoCreateDTO);
