@@ -1,6 +1,5 @@
 package com.ejemplo.residentevil.model;
 
-import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -17,8 +16,13 @@ public class Enemigo {
     private int salud;
     private String tipo; // Puede ser "zombie", "mutante", etc.
 
-    @ManyToMany(mappedBy = "enemigos", fetch = FetchType.LAZY)
-    private Set<Arma> armas = new HashSet<>(); // Inicializa el set
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "enemigo_arma",
+        joinColumns = @JoinColumn(name = "enemigo_id"),
+        inverseJoinColumns = @JoinColumn(name = "arma_id")
+    )
+    private Set<Arma> armas; // Conjunto de armas que puede usar el enemigo
 
     public Enemigo() {
     }
@@ -28,7 +32,7 @@ public class Enemigo {
         this.nombre = nombre;
         this.salud = salud;
         this.tipo = tipo;
-        this.armas = armas != null ? armas : new HashSet<>(); // Manejo de nulos
+        this.armas = armas;
     }
 
     public Set<Arma> getArmas() {
@@ -36,6 +40,16 @@ public class Enemigo {
     }
 
     public void setArmas(Set<Arma> armas) {
-        this.armas = armas != null ? armas : new HashSet<>(); // Manejo de nulos
+        this.armas = armas;
+    }
+
+    public void setDescripcion(String descripcion) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDescripcion'");
+    }
+
+    public Object getPersonajes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPersonajes'");
     }
 }

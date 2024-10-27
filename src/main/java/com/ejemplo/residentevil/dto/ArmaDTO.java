@@ -1,42 +1,40 @@
 package com.ejemplo.residentevil.dto;
 
+import java.util.Set;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 @Builder
 public class ArmaDTO {
-    @Schema(description = "Unique identifier of the weapon", example = "1")
+    @Schema(description = "Id del arma", example = "1")
     private Long id;
 
-    @Schema(description = "Name of the weapon", example = "Handgun")
+    @Schema(description = "Nombre del arma", example = "Escopeta")
     private String nombre;
 
-    @Schema(description = "Type of the weapon", example = "Firearm")
-    private String tipo;
+    @Schema(description = "Precio del arma", example = "350.0")
+    private Double precio;
 
-    @Schema(description = "Damage caused by the weapon", example = "50.0")
-    private Double daño;
-
-    @Schema(description = "Stock of the weapon", example = "10")
+    @Schema(description = "Stock del arma", example = "15")
     private int stock;
 
-    private Set<Long> enemigoIds; // Renombrado para reflejar el contexto de enemigos
+    @Schema(description = "Categoría del arma", example = "escopetas")
+    private String categoria;
 
-    // Constructor vacío
-    public ArmaDTO() {}
+    private Set<Long> enemigoIds;
 
-    // Constructor con parámetros
-    public ArmaDTO(Long id, String nombre, String tipo, Double daño, int stock, Set<Long> enemigoIds) {
+    public ArmaDTO() {
+    }
+
+    public ArmaDTO(Long id, String nombre, Double precio, int stock, String categoria, Set<Long> enemigoIds) {
         this.id = id;
         this.nombre = nombre;
-        this.tipo = tipo;
-        this.daño = daño;
+        this.precio = precio;
         this.stock = stock;
-        this.enemigoIds = enemigoIds; // Renombrado para reflejar el contexto de enemigos
+        this.categoria = categoria;
+        this.enemigoIds = enemigoIds;
     }
 
     public Set<Long> getEnemigoIds() {

@@ -1,42 +1,44 @@
 package com.ejemplo.residentevil.dto;
 
+import java.util.Set;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 @Builder
 public class PersonajeDTO {
-    @Schema(description = "Unique identifier of the character", example = "1")
+    @Schema(description = "Identificador único del personaje", example = "1")
     private Long id;
+    
+    @Schema(description = "Nombre del personaje", example = "Leon S. Kennedy")
+    private String name;
+    
+    @Schema(description = "Email del personaje", example = "leon.kennedy@example.com")
+    private String email;
+    
+    @Schema(description = "Número de teléfono del personaje", example = "1234567890")
+    private String phone;
+    
+    private Set<Long> enemigoIds;  // Cambiado de panaderiaIds a enemigoIds
 
-    @Schema(description = "Name of the character", example = "Leon S. Kennedy")
-    private String nombre;
+    public PersonajeDTO() {
+    }
 
-    @Schema(description = "Ability of the character", example = "Master of firearms")
-    private String habilidad;
-
-    @Schema(description = "Set of weapons associated with the character")
-    private Set<Long> armaIds; 
-
-    // Constructor vacío
-    public PersonajeDTO() {}
-
-    // Constructor con parámetros
-    public PersonajeDTO(Long id, String nombre, String habilidad, Set<Long> armaIds) {
+    public PersonajeDTO(Long id, String name, String email, String phone, Set<Long> enemigoIds) {
         this.id = id;
-        this.nombre = nombre;
-        this.habilidad = habilidad;
-        this.armaIds = armaIds;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.enemigoIds = enemigoIds;  // Cambiado de panaderiaIds a enemigoIds
     }
 
-    public Set<Long> getArmaIds() {
-        return armaIds;
+    public Set<Long> getEnemigoIds() {
+        return enemigoIds;  // Cambiado de getPanaderiaIds a getEnemigoIds
     }
 
-    public void setArmaIds(Set<Long> armaIds) {
-        this.armaIds = armaIds;
+    public void setEnemigoIds(Set<Long> enemigoIds) {
+        this.enemigoIds = enemigoIds;  // Cambiado de setPanaderiaIds a setEnemigoIds
     }
 }

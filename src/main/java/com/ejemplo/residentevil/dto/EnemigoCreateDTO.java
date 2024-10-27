@@ -9,24 +9,22 @@ import lombok.Data;
 public class EnemigoCreateDTO {
     private Long id;
 
-    @Schema(description = "Name of the enemy", example = "Zombie")
+    @Schema(description = "Nombre del enemigo", example = "Zombi")
     private String nombre;
 
-    @Schema(description = "Type of the enemy", example = "Undead")
-    private String tipo;
+    @Schema(description = "Dirección del enemigo", example = "Av 123")
+    private String direccion;
 
-    @Schema(description = "Description of the enemy's abilities", example = "Slow but deadly")
-    private String descripcion;
+    @Schema(description = "Teléfono del enemigo", example = "99887766")
+    private String telefono;
 
-    // Constructor vacío
-    public EnemigoCreateDTO() {}
-
-    // Constructor con parámetros
-    public EnemigoCreateDTO(Long id, String nombre, String tipo, String descripcion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.tipo = tipo;
-        this.descripcion = descripcion;
+    public EnemigoCreateDTO() {
     }
 
+    public EnemigoCreateDTO(Long id, String nombre, String direccion, String telefono) {
+        this.id = id;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+    }
 }

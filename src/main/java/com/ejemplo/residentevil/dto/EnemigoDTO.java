@@ -1,39 +1,37 @@
 package com.ejemplo.residentevil.dto;
 
-import java.util.Set;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import java.util.Set;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
 @Builder
 public class EnemigoDTO {
-    
-    @Schema(description = "Unique identifier of the enemy", example = "1")
+    @Schema(description = "Id del enemigo", example = "1")
     private Long id;
 
-    @Schema(description = "Name of the enemy", example = "Zombie")
+    @Schema(description = "Nombre del enemigo", example = "Zombi")
     private String nombre;
 
-    @Schema(description = "Type of the enemy", example = "Undead")
-    private String tipo;
+    @Schema(description = "Dirección del enemigo", example = "AV 123")
+    private String direccion;
 
-    @Schema(description = "Description of the enemy", example = "A slow but deadly creature")
-    private String descripcion;
+    @Schema(description = "Teléfono del enemigo", example = "99887766")
+    private String telefono;
 
-    @Schema(description = "Set of weapons associated with the enemy")
+    private Set<PersonajeDTO> personajes;
     private Set<ArmaDTO> armas;
 
-    // Constructor vacío
-    public EnemigoDTO() {}
+    public EnemigoDTO() {
+    }
 
-    // Constructor con parámetros
-    public EnemigoDTO(Long id, String nombre, String tipo, String descripcion, Set<ArmaDTO> armas) {
+    public EnemigoDTO(Long id, String nombre, String direccion, String telefono, Set<PersonajeDTO> personajes, Set<ArmaDTO> armas) {
         this.id = id;
         this.nombre = nombre;
-        this.tipo = tipo;
-        this.descripcion = descripcion;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.personajes = personajes;
         this.armas = armas;
     }
 }
