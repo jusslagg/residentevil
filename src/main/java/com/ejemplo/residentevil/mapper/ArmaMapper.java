@@ -5,8 +5,6 @@ import com.ejemplo.residentevil.model.Arma;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class ArmaMapper {
@@ -40,7 +38,7 @@ public class ArmaMapper {
     }
 
     public Collection<Arma> getPersonajes() {
-        // TODO Auto-generated method stub
+
         throw new UnsupportedOperationException("Unimplemented method 'getPersonajes'");
     }
 }
