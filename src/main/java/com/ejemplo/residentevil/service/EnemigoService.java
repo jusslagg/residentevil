@@ -27,27 +27,26 @@ public class EnemigoService {
 
     public List<EnemigoDTO> getAllEnemigos(boolean includeRelations) {
         return enemigoRepository.findAll().stream()
-                .map(enemigo -> enemigoMapper.toDTO(enemigo, includeRelations))
+                .map(enemigo -> enemigoMapper.toDTOEnemigo(enemigo, includeRelations))
                 .collect(Collectors.toList());
     }
 
     public Optional<EnemigoDTO> getEnemigoById(Long id, boolean includeRelations) {
         return enemigoRepository.findById(id)
-                .map(enemigo -> enemigoMapper.toDTO(enemigo, includeRelations));
+                .map(enemigo -> enemigoMapper.toDTOEnemigo(enemigo, includeRelations));
     }
 
     public EnemigoDTO saveEnemigo(EnemigoCreateDTO enemigoCreateDTO) {
         Enemigo enemigo = enemigoMapper.toEntity(enemigoCreateDTO);
         Enemigo savedEnemigo = enemigoRepository.save(enemigo);
-        return enemigoMapper.toDTO(savedEnemigo, false);
+        return enemigoMapper.toDTOEnemigo(savedEnemigo, false);
     }
 
     public EnemigoDTO updateEnemigo(Long id, EnemigoCreateDTO enemigoCreateDTO) {
         return enemigoRepository.findById(id)
             .map(enemigo -> {
                 enemigo.setNombre(enemigoCreateDTO.getNombre());
-                enemigo.setTipo(enemigoCreateDTO.getTipo());
-                return enemigoMapper.toDTO(enemigoRepository.save(enemigo), false);
+                return enemigoMapper.toDTOEnemigo(enemigoRepository.save(enemigo), false);
             })
             .orElse(null);
     }
